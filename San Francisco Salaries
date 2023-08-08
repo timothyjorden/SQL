@@ -1,0 +1,59 @@
+# For this SQL project I extracted a database from Kaggle that contains various information pertaining to the pay of San Francisco city employees.
+   
+1. I wrote this query to view all data contained within the database
+SELECT * FROM SFSal.Salaries;
+
+2. I wrote this query to determine the ten job titles of San Fransisco employees who have the highest average total pay.
+SELECT JobTitle, AVG(TotalPay)
+    FROM SFSal.Salaries
+    GROUP BY JobTitle
+    ORDER BY AVG(TotalPay) DESC
+    LIMIT 10;
+   
+3. I wrote this query to categorize total pay amounts into 5 levels then view San Francisco city employee job titles that contain fire or police with their appropriate pay category.
+SELECT JobTitle Job_Title,
+    CASE
+        WHEN AVG(TotalPay) > 250000 THEN "Very Above Average"
+        WHEN AVG(TotalPay) > 100000 THEN "Above Average"
+        WHEN AVG(TotalPay) > 50000 THEN "Average"
+        WHEN AVG(TotalPay) > 25000 THEN "Below Average"
+        ELSE "Very Below Average"
+    END AS "Pay_Category"
+    FROM SFSal.Salaries
+    WHERE JobTitle LIKE "%fire%" OR "%police%"
+    GROUP BY JobTitle;
+    
+4. I wrote this query to determine how many San Francisco city employees make more than $250,000 a year in total pay.
+SELECT COUNT(TotalPay)
+    FROM SFSal.Salaries
+    WHERE TotalPay > 250000;
+    
+5. I wrote this query to gather a comprehensive list of employees, listed alphabetically, whose base pay is between $35,000 and $35,500.
+SELECT EmployeeName
+    FROM SFSal.Salaries
+    WHERE BasePay BETWEEN 35000 AND 35500
+    ORDER BY EmployeeName;
+    
+6. I wrote this query to obtain a list of nursing positions with the City of San Fransisco and their average base pay.
+SELECT JobTitle, AVG(BasePay)
+    FROM SFSal.Salaries
+    WHERE JobTitle LIKE "%nurse%"
+    GROUP BY JobTitle;
+    
+7.  I wrote this query to determine the highest total pay of a San Francisco city employee included within the database along with their name and job title.
+SELECT EmployeeName, JobTitle, MAX(TotalPay)
+    FROM SFSal.Salaries;
+    
+8. I wrote this query to discover the pay information of a particular San Francisco city employee.
+SELECT * 
+    FROM SFSal.Salaries
+    WHERE EmployeeName = "MARIA BEE";
+    
+9. I wrote this query to determine the number of distinct job titles there are with the city of San Francisco.
+SELECT COUNT(DISTINCT JobTitle)
+    FROM SFSal.Salaries;
+    
+10. I wrote this query to see how the average base pay and total pay across San Francisco city employees adjusted over the years contained within the database.
+SELECT Year, AVG(BasePay), AVG(TotalPay)
+    FROM SFSal.Salaries
+    GROUP BY Year;
