@@ -1,0 +1,58 @@
+# For this SQL project I created tables and inserted data into them pertaining to famous couples. 
+
+1. I wrote this query to create a table called "profession".
+CREATE TABLE profession (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, 
+  talent_name TEXT);
+
+2. I wrote this query to insert data into the "profession" table.
+INSERT INTO profession (talent_name) VALUES
+  ("Singing"),
+  ("Acting"),
+  ("Athlete"),
+  ("Modeling");
+
+3. I wrote this query to create a table called "famous_people".
+CREATE TABLE famous_people (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, 
+  name TEXT, 
+  talent_id INTEGER);
+
+4. I wrote this query to insert data into the "famous_people" table.
+INSERT INTO famous_people (name, talent_id) VALUES 
+  ("Ben Affleck", 2),
+  ("Jennifer Lopez", 2), 
+  ("Tim McGraw", 1),
+  ("Faith Hill", 1),
+  ("Adam Levine", 1),
+  ("Behati Prinsloo", 4),
+  ("Ashton Kutcher", 2),
+  ("Mila Kunis", 2),
+  ("David Beckham", 3),
+  ("Victoria Beckham", 4);
+
+5. I wrote this query to create a table called "famous_couples". 
+CREATE TABLE famous_couples (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, 
+  spouse_id1 INTEGER, 
+  spouse_id2 INTEGER);
+
+6. I wrote this query to insert data into the "famous_couples" table.
+INSERT INTO famous_couples (spouse_id1, spouse_id2) VALUES
+  (1, 2),
+  (3, 4),
+  (5, 6),
+  (7, 8),
+  (9, 10);
+
+7. I wrote this query to view a list of famous couples organized as Husband and Wife.
+SELECT a.name Husband, b.name Wife FROM famous_couples
+  JOIN famous_people a
+  ON famous_couples.spouse_id1 = a.id
+  JOIN famous_people b
+  ON famous_couples.spouse_id2 = b.id;
+
+8. I wrote this query to create a table that lists famous people and their primary profession.
+SELECT name Name, talent_name Talent FROM famous_people
+  JOIN profession
+  ON famous_people.talent_id = profession.id;
