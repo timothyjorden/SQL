@@ -1,0 +1,102 @@
+# For this SQL project I analyzed data about a company's customers, employees, and products.
+
+1. I wrote this query to determine which two employees have worked at the company the longest and the dates that they were hired on.
+SELECT LastName, FirstName, HireDate
+    FROM chinook.employees
+    ORDER BY HireDate ASC
+    LIMIT 2;
+    
+2. I wrote this query to get a comprehensive list of available album titles and the name of the corresponding artists.
+SELECT art.Name Artist_Name, alb.Title Album_Title
+    FROM chinook.artists art
+    JOIN chinook.albums alb
+    ON art.ArtistId = alb.ArtistId
+    ORDER BY art.Name;
+        
+3. I wrote this query to obtain a list of email addresses for customers in the United States to email a promotional incentive to.
+SELECT Email
+    FROM chinook.customers
+    WHERE Country = "USA"
+    ORDER BY Email ASC;
+    
+4. I wrote this query to determine the names of the top ten customers who had the largest invoice totals in the first six months of 2009.
+SELECT cust.LastName, cust.FirstName, inv.Total
+    FROM chinook.customers cust
+    JOIN chinook.invoices inv
+    ON cust.CustomerId = inv.CustomerId
+    WHERE inv.InvoiceDate BETWEEN "2009-01-01" AND "2009-06-31" 
+    GROUP BY cust.CustomerId
+    ORDER BY inv.Total DESC
+    LIMIT 10;
+    
+5. I wrote this query to determine the total revenue each sales agent has generated for the company.
+SELECT emp.LastName Last_Name, emp.FirstName First_Name, ROUND(SUM(inv.Total), 2) AS "Revenue_Generated"
+    FROM chinook.employees emp
+    JOIN chinook.customers cus
+        ON cus.SupportRepId = emp.EmployeeId
+    JOIN chinook.invoices inv
+        ON inv.CustomerId = cus.CustomerId
+    WHERE emp.Title = "Sales Support Agent"
+    GROUP BY emp.LastName
+    ORDER BY Revenue_Generated DESC;
+    
+6. I wrote this query to view track names with their corresponding artist name, genre, and available media type.  
+SELECT tra.Composer Artist_Name, tra.Name Track_Name, gen.Name Genre, med.Name Media_Type
+    FROM chinook.tracks tra
+    JOIN chinook.Genres gen
+        ON tra.GenreId = gen.GenreId
+    JOIN chinook.media_types med
+        ON tra.MediaTypeId = med.MediaTypeId
+    WHERE tra.composer IS NOT NULL
+    GROUP BY tra.composer;
+    
+7. I wrote this query to see how many customers there are in each country from most to least.
+SELECT Country, COUNT(CustomerId)
+    FROM chinook.customers
+    GROUP BY Country
+    ORDER BY COUNT(CustomerId) DESC;
+
+8. I wrote this query to see which songs brought in more than $15 of total revenue from outside the United States.
+SELECT tra.Name, inv.Total
+    FROM chinook.invoices inv
+    JOIN chinook.invoice_items init
+    ON inv.InvoiceId = init.InvoiceId
+    
+    JOIN chinook.tracks tra
+    ON init.TrackId = tra.TrackId
+    
+    WHERE NOT inv.BillingCountry = "USA"
+    AND inv.Total >= 15
+    GROUP BY tra.TrackId
+    ORDER BY inv.Total DESC;
+
+9. I wrote this query to determine the total revenue gained from each Country in 2010.
+SELECT BillingCountry, Total
+    FROM chinook.invoices
+    WHERE InvoiceDate BETWEEN "2010-01-01" AND "2010-12-31"
+    GROUP BY BillingCountry
+    ORDER BY Total DESC;
+
+10. I wrote this query to see the number of times the largest spending customers have ordered and the average amount they spend on each order.
+SELECT CustomerId, COUNT(invoiceid) Number_of_Orders, ROUND(SUM(Total) / COUNT(invoiceId),2) AVG_Spent
+    FROM chinook.invoices
+    GROUP BY customerId
+    ORDER BY AVG_Spent DESC
+    LIMIT 5;
+
+11. I wrote this query to produce a list of employees and the name of the person they report to with their respective titles.
+SELECT emp.Title, emp.FirstName First_Name, emp.LastName Last_Name, boss.Title Boss_Title, boss.FirstName Boss_First_Name, boss.LastName Boss_Last_Name
+    FROM chinook.employees emp
+    JOIN chinook.employees boss
+    ON emp.ReportsTo = boss.EmployeeId
+    ORDER BY boss.EmployeeId;
+    
+12. I wrote this query to categorize the tracks by file size to make their byte size more manageable.
+SELECT Name, Bytes,
+    CASE
+        WHEN Bytes > 12500000 THEN "Large"
+        WHEN Bytes > 6500000 THEN "Medium"
+        ELSE "Small"
+    END AS "File_Size"
+    FROM chinook.tracks
+    ORDER BY bytes;
