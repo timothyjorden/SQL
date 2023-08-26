@@ -74,8 +74,7 @@ SELECT dri.forename First_Name, dri.surname Last_Name, COUNT(res.position) Times
     GROUP BY dri.driverId
     ORDER BY COUNT(res.position) DESC
     LIMIT 1;
-    
-    
+        
 8. I wrote this query to see how many times Michael Schumacher raced at each Grand Prix.
 SELECT rac.Name, COUNT(rac.name) Times_Raced
     FROM Formula1.results res
@@ -88,7 +87,6 @@ SELECT rac.Name, COUNT(rac.name) Times_Raced
     WHERE dri.forename = "Michael"
     AND dri.surname = "Schumacher"
     GROUP BY rac.name;
-
 
 9. I wrote this query to find out how many times Michael Schumacher won each Grand Prix.
 SELECT rac.Name Race_Name, COUNT(res.position) Times_Won
