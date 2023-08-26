@@ -20,15 +20,14 @@ CREATE TABLE BIT_DB.Spotifydata (
     duration_ms integer NOT NULL,
     time_signature integer NOT NULL );
     
-
-/* 1. I wrote this query to determine which artists had more than one top song in 2021 and the number of songs they had in which they were listed from most to least. */
+1. I wrote this query to determine which artists had more than one top song in 2021 and the number of top songs they had, these numbers were then used to list them from most to least.
 SELECT artist_name, COUNT(artist_name) Total
     FROM Spotifydata
     GROUP by artist_name
     HAVING Total > 1    
     ORDER BY Total DESC;
     
-/* 2. I wrote this query to determine the average popularity of the artists and tag with "Top Star". */
+2. I wrote this query to determine the average popularity of the artists and tag them as "Top Star".
 WITH average_popularity AS (
     SELECT s.artist_name, AVG(s.popularity) Average_Popularity
     FROM Spotifydata s
@@ -38,11 +37,11 @@ WITH average_popularity AS (
     FROM average_popularity
     WHERE Average_Popularity >= 90; 
     
-/* 3. I wrote this query to determine the average length of time Spotify's top songs of 2021 are in minutes. */
+3. I wrote this query to determine the average length of time Spotify's top songs of 2021 are in minutes.
 SELECT ((AVG(duration_ms) / 1000) / 60) Average_Minutes
     FROM Spotifydata;
     
-/* 4. I wrote this query to categorize the tempo level of Spotify's top songs of 2021. */
+4. I wrote this query to categorize the tempo level of Spotify's top songs of 2021.
 SELECT Track_Name, Popularity, Danceability,
     CASE
         WHEN tempo > 165 THEN "A. Very High"
@@ -53,39 +52,39 @@ SELECT Track_Name, Popularity, Danceability,
     FROM Spotifydata
     ORDER BY Tempo_Level;
    
-/* 5. I wrote this query to attain a complete list of artists who made Spotify's Top 100 chart in 2021.*/
+5. I wrote this query to attain a complete list of artists who made Spotify's top chart in 2021.
 SELECT DISTINCT artist_name Artists_in_Spotify_Top_100_of_2021
     FROM Spotifydata
     ORDER BY artist_name;                                                                                            
 
-/* 6. I wrote this query to compare the top 10 most danceable songs in Spotify's top songs of 2021 along with their popularity rating. */
+6. I wrote this query to compare the top 10 most danceable songs in Spotify's top songs of 2021 along with their popularity rating.
 SELECT artist_name, track_name, popularity, danceability
     FROM Spotifydata
     ORDER BY danceability DESC
     LIMIT 10;
 
 
-/* 7. I wrote this query to determine the 10 songs with the highest popularity rating. */
+7. I wrote this query to determine the 10 songs with the highest popularity rating.
 SELECT Popularity, artist_name Artist, track_name Song
     FROM Spotifydata
     ORDER BY popularity DESC
     LIMIT 10;
 
-/* 8. I wrote this query to determine the most popular song key from Spotify's top songs of 2021 and the number of times that song key appeared in the list. */
+8. I wrote this query to determine the most popular song key from Spotify's top songs of 2021 and the number of times that song key appeared in the list.
 SELECT Song_Key, COUNT(song_key) Number_of_Times
     FROM Spotifydata
     GROUP BY song_key
     ORDER BY song_key DESC
     LIMIT 1;
     
-/* 9. I wrote this query to garner a list of songs that fit either of two requirements. */
+9. I wrote this query to garner a list of songs that fit either of two requirements.
 SELECT track_id
     FROM Spotifydata
     WHERE acousticness BETWEEN "0.5" AND "0.6"
     OR song_key = "2"
     ORDER BY acousticness ASC;
     
-/* 10. I wrote this query to determine list the top 3 most energetic songs tagged as "Max Energy". */
+10. I wrote this query to list the top 3 most energetic songs and tag them as "Max Energy".
 SELECT Artist_Name, Track_Name, "Max Energy" AS Tag
     FROM Spotifydata
     GROUP BY artist_name
