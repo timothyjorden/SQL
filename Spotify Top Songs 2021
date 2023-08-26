@@ -63,7 +63,6 @@ SELECT artist_name, track_name, popularity, danceability
     ORDER BY danceability DESC
     LIMIT 10;
 
-
 7. I wrote this query to determine the 10 songs with the highest popularity rating.
 SELECT Popularity, artist_name Artist, track_name Song
     FROM Spotifydata
